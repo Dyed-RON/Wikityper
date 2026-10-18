@@ -145,7 +145,7 @@ Implement as a pure, testable module (`src/lib/typingEngine.ts`) plus a hook (`u
 - `Accuracy % = correctKeystrokes / totalKeystrokes * 100`, rounded; show `100` when there are no keystrokes yet.
 - Live WPM updates at least once per second.
 
-**Unit tests (required):** WPM math, accuracy math, backspace behavior, timer start on first key, lock on finish, early finish.
+**Unit tests (required):** WPM math, accuracy math, backspace behavior, timer start on first key, lock on finish, and continued typing after passage exhaustion.
 
 ---
 
@@ -231,26 +231,26 @@ Required `package.json` scripts:
 
 ## 9. Definition of Done (whole project)
 
-- [ ] Landing page matches section 3.1, with working live suggestions.
-- [ ] Selecting a topic fetches and normalizes an article typing passage, then transitions to typing.
-- [ ] HUD shows live WPM, 30 s countdown (under WPM), and live accuracy (top-right).
-- [ ] Correct, wrong, and untyped characters styled as specified; caret visible; smooth auto-scroll.
-- [ ] Input locks at 0 s; results modal shows final WPM and Accuracy with Restart and New topic.
-- [ ] Error, empty, and loading states handled.
-- [ ] `typecheck`, `lint`, `test`, `build` all pass.
+- [x] Landing page matches section 3.1, with working live suggestions.
+- [x] Selecting a topic fetches and normalizes an article typing passage, then transitions to typing.
+- [x] HUD shows live WPM, 30 s countdown (under WPM), and live accuracy (top-right).
+- [x] Correct, wrong, and untyped characters styled as specified; caret visible; smooth auto-scroll.
+- [x] Input locks at 0 s; results modal shows final WPM and Accuracy with Restart and New topic.
+- [x] Error, empty, and loading states handled.
+- [x] `typecheck`, `lint`, `test`, `build` all pass.
 - [ ] README with run instructions.
 
 ---
 
 ## 10. Testing Checklist (manual, after each UI phase)
 
-1. Type "alan tur", see suggestions, pick one with the keyboard.
-2. Press Enter on a typo query, get a graceful "no results" or closest match.
-3. Timer does **not** start until the first keystroke.
-4. Make deliberate mistakes; accuracy drops, WPM stays sensible.
-5. Hold Backspace; no page navigation, no negative index.
-6. Let the timer run out; input is locked, modal appears, Restart works, New topic works.
-7. Resize to a narrow viewport; layout holds.
+1. [x] Type "alan tur", see suggestions, pick one with the keyboard.
+2. [x] Press Enter on a typo query, get a graceful "no results" or closest match.
+3. [x] Timer does **not** start until the first keystroke.
+4. [x] Make deliberate mistakes; accuracy drops, WPM stays sensible.
+5. [x] Hold Backspace; no page navigation, no negative index.
+6. [x] Let the timer run out; input is locked, modal appears, Restart works, New topic works.
+7. [x] Resize to a narrow viewport; layout holds.
 
 ---
 
@@ -301,10 +301,11 @@ Required `package.json` scripts:
 ## 12. Progress Log
 
 ### 12.1 Current Status
-- **Phase:** 5 (complete)
+- **Phase:** 6 (verification in progress)
 - **Last completed task:** 5.4
+- **Current task:** 6.2 (product behavior verified; final sign-off pending README)
 - **Next task:** 6.1
-- **Known issues / blockers:** None known; typing intentionally continues until the timer expires, per the user-directed behavior change below.
+- **Known issues / blockers:** README is still the Vite template; complete task 6.1, then rerun the final verification for section 9.
 - **Last updated:** 2026-10-18
 
 ### 12.2 Entry Template (copy for each run, newest first)
@@ -320,6 +321,32 @@ Required `package.json` scripts:
 ```
 
 ### 12.3 Log Entries
+
+#### [2026-10-18 22:17] Run #23: PARTIAL
+- **Tasks:** 6.2 (requested before 6.1)
+- **What was done:** Completed product verification against sections 9 and 10, fixing timer-only completion, the visible empty-search state, and caret-based passage scrolling.
+- **Files changed:** `WIKITYPE.md`, `src/App.tsx`, `src/App.test.tsx`, `src/components/TypingArea.tsx`, `src/components/TypingArea.test.tsx`, `src/lib/typingEngine.ts`, `src/lib/typingEngine.test.ts`, `src/styles/index.css`
+- **Verification:** `npm run typecheck && npm run lint && npm run test && npm run build` — all passed; 47 tests passed. Browser checks covered typo suggestions/keyboard selection, no-results and missing-topic recovery, first-key timer start, incorrect/correct typing and Backspace accuracy, caret auto-scroll at 360px, natural timer expiry/input lock/results, and New topic. App integration tests cover Restart.
+- **Issues / notes:** All product behavior checks pass. The README requirement in section 9 is still unmet; complete 6.1, then repeat final sign-off for 6.2.
+- **Commit:** to be recorded after commit.
+- **Next task:** 6.1
+
+#### [2026-10-18 22:16] Run #22: FAILED
+- **Tasks:** 6.2 verification regression test
+- **What was done:** Added an auto-scroll regression test after browser verification exposed that the caret's `offsetTop` was relative to its positioned character span.
+- **Files changed:** `src/components/TypingArea.tsx`, `src/components/TypingArea.test.tsx`
+- **Verification:** Typecheck, lint, and tests passed; production build failed with `TS2339` because the test's `closest()` result was typed as `Element`. Adding the correct `HTMLElement` generic fixed the test's style access; Run #23 passed all four validation steps.
+- **Issues / notes:** None remaining in this fix.
+- **Next task:** Complete section 6.2 verification.
+
+#### [2026-10-18 22:12] Run #21: PARTIAL
+- **Tasks:** 6.2 (requested before 6.1)
+- **What was done:** Final-verified the implemented product behaviors and corrected two gaps: the reducer no longer finishes when the target ends, and empty searches now display "No results".
+- **Files changed:** `WIKITYPE.md`, `src/App.tsx`, `src/App.test.tsx`, `src/lib/typingEngine.ts`, `src/lib/typingEngine.test.ts`, `src/styles/index.css`
+- **Verification:** `npm run typecheck && npm run lint && npm run test && npm run build` — all passed; 46 tests passed. Browser verified live "alan tur" suggestions and keyboard selection, empty/missing-topic handling, 30s before the first keystroke, accuracy/backspace behavior, and layout at 360px. The App integration test verifies timeout, lock, restart, and New topic.
+- **Issues / notes:** Product behaviors in sections 9 and 10 are verified. Overall section 9 remains incomplete because the README is still the Vite template; final section 6.2 sign-off must be repeated after task 6.1.
+- **Commit:** to be recorded after commit.
+- **Next task:** 6.1
 
 #### [2026-10-18 22:01] Run #20: SUCCESS
 - **Tasks:** User-requested continuous typing passage enhancement

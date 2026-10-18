@@ -90,17 +90,31 @@ describe('typingReducer', () => {
     expect(afterLockedInput).toBe(finished)
   })
 
-  it('finishes immediately when the passage is completed', () => {
+  it('keeps running after the passage is completed until the timer expires', () => {
     let state = createInitialTypingState('ab')
     state = typingReducer(state, { type: 'KEY', key: 'a', timestamp: 100 })
-    state = typingReducer(state, { type: 'KEY', key: 'x', timestamp: 200 })
+    state = typingReducer(state, { type: 'KEY', key: 'b', timestamp: 200 })
 
-    expect(state.status).toBe('finished')
-    expect(state.typed).toBe('ax')
+    expect(state.status).toBe('running')
+    expect(state.typed).toBe('ab')
     expect(state.timeLeft).toBe(30)
+    expect(state.correctKeystrokes).toBe(2)
+    expect(state.totalKeystrokes).toBe(2)
+
+    state = typingReducer(state, { type: 'TICK', timestamp: 30_100 })
+    expect(state.status).toBe('finished')
+    expect(state.timeLeft).toBe(0)
+  })
+
+  it('continues accepting keys after the target is exhausted', () => {
+    let state = createInitialTypingState('a')
+    state = typingReducer(state, { type: 'KEY', key: 'a', timestamp: 100 })
+    state = typingReducer(state, { type: 'KEY', key: 'b', timestamp: 200 })
+
+    expect(state.status).toBe('running')
+    expect(state.typed).toBe('ab')
     expect(state.correctKeystrokes).toBe(1)
     expect(state.totalKeystrokes).toBe(2)
-    expect(state.finishedAt).toBe(200)
   })
 
   it('extends the target without resetting progress or the running timer', () => {

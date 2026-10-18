@@ -43,6 +43,16 @@ describe('App', () => {
     expect(searchInput).toHaveValue('')
   })
 
+  it('shows a no-results state when the search returns no topics', async () => {
+    render(<App />)
+
+    fireEvent.change(screen.getByPlaceholderText('What are you interested in?'), {
+      target: { value: 'unknown topic' },
+    })
+
+    expect(await screen.findByRole('status')).toHaveTextContent('No results')
+  })
+
   it('shows article loading after a query is submitted', () => {
     fetchTypingPassageMock.mockReturnValue(new Promise(() => undefined))
     render(<App />)

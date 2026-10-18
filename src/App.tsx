@@ -28,7 +28,7 @@ function App() {
   const [view, setView] = useState<View>('landing')
   const [article, setArticle] = useState<ArticleState>(initialArticleState)
   const [attempt, setAttempt] = useState(0)
-  const { titles } = useWikiSearch(query)
+  const { titles, isEmpty } = useWikiSearch(query)
   const typingTest = useTypingTest(article.text ?? '')
   const visibleActiveIndex = Math.min(activeIndex, titles.length - 1)
 
@@ -187,6 +187,11 @@ function App() {
             onSelect={selectTopic}
             titles={titles}
           />
+          {isEmpty ? (
+            <p className="search-empty" role="status">
+              No results
+            </p>
+          ) : null}
         </div>
       </section>
     </main>

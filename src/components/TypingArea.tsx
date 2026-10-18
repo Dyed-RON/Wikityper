@@ -23,6 +23,7 @@ export function TypingArea({
   const viewportRef = useRef<HTMLDivElement>(null)
   const caretRef = useRef<HTMLSpanElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const scrollOffsetRef = useRef(0)
   const [scrollOffset, setScrollOffset] = useState(0)
 
   useEffect(() => {
@@ -34,13 +35,15 @@ export function TypingArea({
     const caret = caretRef.current
     if (!viewport || !caret) return
 
-    const nextOffset = Math.max(
-      0,
-      caret.offsetTop - viewport.clientHeight / 3,
-    )
-    setScrollOffset((currentOffset) =>
-      currentOffset === nextOffset ? currentOffset : nextOffset,
-    )
+    const caretTop =
+      caret.getBoundingClientRect().top -
+      viewport.getBoundingClientRect().top +
+      scrollOffsetRef.current
+    const nextOffset = Math.max(0, caretTop - viewport.clientHeight / 3)
+    if (scrollOffsetRef.current !== nextOffset) {
+      scrollOffsetRef.current = nextOffset
+      setScrollOffset(nextOffset)
+    }
   }, [typed.length])
 
   return (

@@ -89,20 +89,17 @@ export function typingReducer(
     return { ...state, typed: state.typed.slice(0, -1) }
   }
 
-  if (action.key.length !== 1 || state.typed.length >= state.target.length) {
-    return state
-  }
+  if (action.key.length !== 1) return state
 
   const typed = state.typed + action.key
   const startedAt = state.startedAt ?? action.timestamp
-  const finished = typed.length === state.target.length
 
   return {
     ...state,
     typed,
-    status: finished ? 'finished' : 'running',
+    status: 'running',
     startedAt,
-    finishedAt: finished ? action.timestamp : null,
+    finishedAt: null,
     correctKeystrokes:
       state.correctKeystrokes +
       Number(action.key === state.target[state.typed.length]),
