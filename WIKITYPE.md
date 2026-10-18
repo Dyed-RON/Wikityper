@@ -238,7 +238,7 @@ Required `package.json` scripts:
 - [x] Input locks at 0 s; results modal shows final WPM and Accuracy with Restart and New topic.
 - [x] Error, empty, and loading states handled.
 - [x] `typecheck`, `lint`, `test`, `build` all pass.
-- [ ] README with run instructions.
+- [x] README with run instructions.
 
 ---
 
@@ -292,7 +292,7 @@ Required `package.json` scripts:
 - [x] 5.4 Responsive pass and final visual polish
 
 ### Phase 6: Wrap-up
-- [ ] 6.1 Write README (install, dev, build, how it works)
+- [x] 6.1 Write README (install, dev, build, how it works)
 - [ ] 6.2 Final full verification against section 9 and section 10
 - [ ] 6.3 (Optional) Deploy to Vercel or Netlify
 
@@ -301,11 +301,10 @@ Required `package.json` scripts:
 ## 12. Progress Log
 
 ### 12.1 Current Status
-- **Phase:** 6 (verification in progress)
-- **Last completed task:** 5.4
-- **Current task:** 6.2 (product behavior verified; final sign-off pending README)
-- **Next task:** 6.1
-- **Known issues / blockers:** README is still the Vite template; complete task 6.1, then rerun the final verification for section 9.
+- **Phase:** 6 (wrap-up)
+- **Last completed task:** 6.1
+- **Next task:** 6.2
+- **Known issues / blockers:** Final section 9/10 sign-off remains; all product behavior checks have passed.
 - **Last updated:** 2026-10-18
 
 ### 12.2 Entry Template (copy for each run, newest first)
@@ -321,6 +320,15 @@ Required `package.json` scripts:
 ```
 
 ### 12.3 Log Entries
+
+#### [2026-10-18 22:25] Run #24: SUCCESS
+- **Tasks:** 6.1
+- **What was done:** Replaced the Vite starter README with WikiType setup requirements, install/dev/build/test/lint commands, product flow, and implementation overview.
+- **Files changed:** `README.md`, `WIKITYPE.md`
+- **Verification:** `npm run typecheck && npm run lint && npm run test && npm run build` — all passed; 47 tests passed.
+- **Issues / notes:** Phase 6.2 final sign-off remains.
+- **Commit:** to be recorded after commit.
+- **Next task:** 6.2
 
 #### [2026-10-18 22:17] Run #23: PARTIAL
 - **Tasks:** 6.2 (requested before 6.1)
