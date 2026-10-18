@@ -330,7 +330,7 @@ Required `package.json` scripts:
 - **Files changed:** `src/components/Hud.tsx`, `src/components/Hud.test.tsx`, `src/components/TypingArea.tsx`, `src/components/TypingArea.test.tsx`, `src/components/TypingPage.css`, `WIKITYPE.md`
 - **Verification:** `npm run typecheck && npm run lint && npm run test && npm run build` — all passed; 34 tests passed with no lint warnings.
 - **Issues / notes:** Smooth line auto-scroll remains task 4.3.
-- **Commit:** Pending
+- **Commit:** `dacd1bbd3b1110c98fcb580b1e6baa5cfa2acf24`
 - **Next task:** 4.3
 
 #### [2026-10-18 21:33] Run #10: FAILED
