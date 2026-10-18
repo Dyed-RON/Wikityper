@@ -330,7 +330,7 @@ Required `package.json` scripts:
 - **Files changed:** `src/App.tsx`, `src/App.test.tsx`, `src/components/ResultsModal.tsx`, `src/components/ResultsModal.test.tsx`, `src/components/TypingArea.tsx`, `src/components/TypingPage.css`, `WIKITYPE.md`
 - **Verification:** `npm run typecheck && npm run lint && npm run test && npm run build` — all passed; 39 tests passed with no lint warnings.
 - **Issues / notes:** None.
-- **Commit:** Pending
+- **Commit:** `54e131a16bca6b701bacffabe1053ae9284c4496`
 - **Next task:** 6.1
 
 #### [2026-10-18 21:44] Run #14: FAILED
