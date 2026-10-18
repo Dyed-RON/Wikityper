@@ -326,7 +326,8 @@ Required `package.json` scripts:
 - **What was done:** Fetch a bounded article extract, reveal additional text in chunks as the user approaches the end, and keep typing active until the timer expires; update the behavior documentation.
 - **Files changed:** `WIKITYPE.md`, `src/App.tsx`, `src/App.test.tsx`, `src/hooks/useTypingTest.ts`, `src/hooks/useTypingTest.test.ts`, `src/lib/typingEngine.ts`, `src/lib/typingEngine.test.ts`, `src/lib/wikipedia.ts`, `src/lib/wikipedia.test.ts`
 - **Verification:** `npm run typecheck && npm run lint && npm run test && npm run build` — all passed; 44 tests passed.
-- **Issues / notes:** User-directed behavior supersedes early finish specified for v1. Commit hash will be recorded in a follow-up log update.
+- **Issues / notes:** User-directed behavior supersedes early finish specified for v1.
+- **Commit:** `e4ebe5e815e09cf90c9fa67316e0c1d0d4789ee9`
 - **Next task:** 6.1
 
 #### [2026-10-18 22:00] Run #19: FAILED
