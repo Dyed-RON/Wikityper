@@ -321,6 +321,15 @@ Required `package.json` scripts:
 
 ### 12.3 Log Entries
 
+#### [2026-10-18 21:52] Run #16: SUCCESS
+- **Tasks:** User-requested landing-page layout refinement
+- **What was done:** Moved the WikiType brand into a top-anchored header while retaining the tagline and search experience in the vertical center of the landing page.
+- **Files changed:** `src/App.tsx`, `src/styles/index.css`, `WIKITYPE.md`
+- **Verification:** `npm run typecheck && npm run lint && npm run test && npm run build` — all passed; 39 tests passed with no lint warnings.
+- **Issues / notes:** Roadmap status is unchanged; this is a verified UI refinement.
+- **Commit:** `9248c9bcfcddf5ca442b42f33b4633d12e501e25`
+- **Next task:** 6.1
+
 #### [2026-10-18 21:45] Run #15: SUCCESS
 - **Tasks:** 5.1–5.4
 - **What was done:**
