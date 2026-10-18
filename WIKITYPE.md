@@ -328,7 +328,7 @@ Required `package.json` scripts:
 - **Files changed:** `WIKITYPE.md`, `src/App.tsx`, `src/App.test.tsx`, `src/components/TypingArea.tsx`, `src/components/TypingArea.test.tsx`, `src/lib/typingEngine.ts`, `src/lib/typingEngine.test.ts`, `src/styles/index.css`
 - **Verification:** `npm run typecheck && npm run lint && npm run test && npm run build` — all passed; 47 tests passed. Browser checks covered typo suggestions/keyboard selection, no-results and missing-topic recovery, first-key timer start, incorrect/correct typing and Backspace accuracy, caret auto-scroll at 360px, natural timer expiry/input lock/results, and New topic. App integration tests cover Restart.
 - **Issues / notes:** All product behavior checks pass. The README requirement in section 9 is still unmet; complete 6.1, then repeat final sign-off for 6.2.
-- **Commit:** to be recorded after commit.
+- **Commit:** `813eda41485ed093e035e29a423a1f3b0cedf512`
 - **Next task:** 6.1
 
 #### [2026-10-18 22:16] Run #22: FAILED
