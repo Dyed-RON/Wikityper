@@ -258,7 +258,7 @@ Required `package.json` scripts:
 
 ### Phase 0: Scaffold
 - [x] 0.1 Create Vite + React + TS project; enable strict TS (scaffolded manually by the user; confirm `"strict": true` in tsconfig)
-- [ ] 0.2 Add Tailwind v4, Prettier, Vitest; keep the existing Oxlint setup; add all npm scripts from section 8 (make sure `lint` is `oxlint`)
+- [x] 0.2 Add Tailwind v4, Prettier, Vitest; keep the existing Oxlint setup; add all npm scripts from section 8 (make sure `lint` is `oxlint`)
 - [ ] 0.3 Create folder structure from section 7 with placeholder files
 - [ ] 0.4 Verify `typecheck`, `lint`, `test`, `build` all run green
 
@@ -302,10 +302,10 @@ Required `package.json` scripts:
 
 ### 12.1 Current Status
 - **Phase:** 0 (in progress)
-- **Last completed task:** 0.1
-- **Next task:** 0.2
-- **Known issues / blockers:** Git repo may not be initialised/pushed yet; the first agent should check `git status` and, if needed, run `git init`, add the remote from the header, and make the first push.
-- **Last updated:** 2026-10-18 (user, manual scaffold)
+- **Last completed task:** 0.2
+- **Next task:** 0.3
+- **Known issues / blockers:** None known. The repository is on `main` and synchronized with `origin/main`.
+- **Last updated:** 2026-10-18
 
 ### 12.2 Entry Template (copy for each run, newest first)
 
@@ -320,6 +320,18 @@ Required `package.json` scripts:
 ```
 
 ### 12.3 Log Entries
+
+#### [2026-10-18 20:56] Run #1: SUCCESS
+- **Tasks:** 0.2
+- **What was done:**
+  - Added Tailwind CSS v4 and the Vite plugin, including the CSS import.
+  - Added Vitest, jsdom, React Testing Library, jest-dom setup, and a scaffold smoke test; retained Oxlint and added all required npm scripts.
+  - Added `.env*` to `.gitignore`.
+- **Files changed:** `.gitignore`, `package.json`, `package-lock.json`, `src/index.css`, `src/App.test.tsx`, `src/test/setup.ts`, `vite.config.ts`, `WIKITYPE.md`
+- **Verification:** `npm run typecheck && npm run lint && npm run test && npm run build` — all passed (1 test); `npm install` reported 0 vulnerabilities.
+- **Issues / notes:** Commit hash will be recorded in a follow-up documentation update.
+- **Commit:** Pending
+- **Next task:** 0.3
 
 #### [2026-10-18 12:51] Run #0: SUCCESS (manual)
 - **Tasks:** 0.1
