@@ -66,6 +66,16 @@
   line-height: 1.8;
   overflow-wrap: anywhere;
   white-space: pre-wrap;
+  will-change: transform;
+}
+
+.typing-passage-viewport {
+  height: 9rem;
+  overflow: hidden;
+}
+
+.typing-passage {
+  transition: transform 220ms ease-out;
 }
 
 .typing-character {
@@ -104,4 +114,43 @@
   position: absolute;
   top: 0;
   width: 1px;
+}
+
+.article-state {
+  color: #d4d4d8;
+  margin: 0 auto;
+  max-width: 42rem;
+  padding: 8rem 1.5rem;
+  text-align: center;
+}
+
+.article-state-detail {
+  color: #a1a1aa;
+}
+
+.article-state-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.article-state-actions button {
+  background: #27272a;
+  border: 1px solid #52525b;
+  border-radius: 0.5rem;
+  color: #fff;
+  cursor: pointer;
+  padding: 0.625rem 1rem;
+}
+
+.article-state-actions button:hover,
+.article-state-actions button:focus-visible {
+  background: #3f3f46;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .typing-passage {
+    transition: none;
+  }
 }
