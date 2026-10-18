@@ -1,1 +1,71 @@
-/* Shared WikiType styles will be added with the UI phases. */
+@import "tailwindcss";
+
+:root {
+  background: #000;
+  color: #fff;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.landing-page {
+  align-items: center;
+  background: #000;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  min-height: 100svh;
+  padding: 1.5rem;
+}
+
+.landing-content {
+  max-width: 42rem;
+  text-align: center;
+  width: 100%;
+}
+
+.landing-content h1 {
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  letter-spacing: -0.06em;
+  line-height: 1;
+  margin: 0;
+}
+
+.landing-content p {
+  color: #a1a1aa;
+  margin: 1rem 0 2rem;
+}
+
+.search-bar {
+  display: block;
+}
+
+.search-bar input {
+  background: #18181b;
+  border: 1px solid #3f3f46;
+  border-radius: 0.75rem;
+  box-sizing: border-box;
+  color: #fff;
+  font-size: 1.125rem;
+  outline: none;
+  padding: 1rem 1.25rem;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+  width: 100%;
+}
+
+.search-bar input::placeholder {
+  color: #71717a;
+}
+
+.search-bar input:focus {
+  border-color: #a1a1aa;
+  box-shadow: 0 0 0 3px rgb(161 161 170 / 20%);
+}

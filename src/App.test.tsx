@@ -1,13 +1,13 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import App from './App'
 
 describe('App', () => {
-  it('renders and responds to the scaffold counter', () => {
+  it('renders the landing-page topic search', () => {
     render(<App />)
 
-    fireEvent.click(screen.getByRole('button', { name: 'Count is 0' }))
-
-    expect(screen.getByRole('button', { name: 'Count is 1' })).toBeInTheDocument()
+    expect(
+      screen.getByPlaceholderText('What are you interested in?'),
+    ).toBeInTheDocument()
   })
 })
