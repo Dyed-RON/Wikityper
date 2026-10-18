@@ -301,10 +301,10 @@ Required `package.json` scripts:
 ## 12. Progress Log
 
 ### 12.1 Current Status
-- **Phase:** 1 (complete)
-- **Last completed task:** 1.4
-- **Next task:** 2.1
-- **Known issues / blockers:** A concurrent agent is working on Phase 2.1 in the shared worktree; its UI edits were preserved and excluded from the Phase 1 commit.
+- **Phase:** 2 (in progress)
+- **Last completed task:** 2.1
+- **Next task:** 2.2
+- **Known issues / blockers:** None known.
 - **Last updated:** 2026-10-18
 
 ### 12.2 Entry Template (copy for each run, newest first)
@@ -320,6 +320,18 @@ Required `package.json` scripts:
 ```
 
 ### 12.3 Log Entries
+
+#### [2026-10-18 21:24] Run #6: SUCCESS
+- **Tasks:** 2.1
+- **What was done:**
+  - Replaced the Vite starter screen with WikiType's solid-black, full-height landing view.
+  - Added a centered, controlled SearchBar with the exact specified placeholder, autofocus, accessible label, and responsive styling.
+  - Updated the landing-page smoke test.
+- **Files changed:** `src/App.tsx`, `src/App.test.tsx`, `src/components/SearchBar.tsx`, `src/styles/index.css`, `WIKITYPE.md`
+- **Verification:** `npm run typecheck && npm run lint && npm run test && npm run build` — all passed; 15 tests passed with no lint warnings.
+- **Issues / notes:** The SearchBar's controlled query state is ready for Phase 2.2 suggestions.
+- **Commit:** `2b807d952617d8595edeeb828ca2353874ad89f4`
+- **Next task:** 2.2
 
 #### [2026-10-18 21:18] Run #5: SUCCESS
 - **Tasks:** 0.3, 0.4, 1.1–1.4
