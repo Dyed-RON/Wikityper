@@ -329,8 +329,8 @@ Required `package.json` scripts:
   - Added `.env*` to `.gitignore`.
 - **Files changed:** `.gitignore`, `package.json`, `package-lock.json`, `src/index.css`, `src/App.test.tsx`, `src/test/setup.ts`, `vite.config.ts`, `WIKITYPE.md`
 - **Verification:** `npm run typecheck && npm run lint && npm run test && npm run build` — all passed (1 test); `npm install` reported 0 vulnerabilities.
-- **Issues / notes:** Commit hash will be recorded in a follow-up documentation update.
-- **Commit:** Pending
+- **Issues / notes:** None.
+- **Commit:** `4726e9797293800631d74a7c20fba0e1e95c5eab`
 - **Next task:** 0.3
 
 #### [2026-10-18 12:51] Run #0: SUCCESS (manual)
