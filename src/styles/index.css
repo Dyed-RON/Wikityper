@@ -24,6 +24,7 @@ input {
   justify-content: center;
   min-height: 100svh;
   padding: 1.5rem;
+  position: relative;
 }
 
 .typing-page {
@@ -59,7 +60,16 @@ input {
   width: 100%;
 }
 
-.landing-content h1 {
+.landing-header {
+  left: 0;
+  padding: 1.5rem;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  top: 0;
+}
+
+.landing-header h1 {
   font-size: clamp(2.5rem, 8vw, 5rem);
   letter-spacing: -0.06em;
   line-height: 1;

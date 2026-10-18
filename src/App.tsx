@@ -145,8 +145,10 @@ function App() {
 
   return (
     <main className="landing-page page-enter">
-      <section className="landing-content" aria-labelledby="landing-title">
+      <header className="landing-header">
         <h1 id="landing-title">WikiType</h1>
+      </header>
+      <section className="landing-content" aria-labelledby="landing-title">
         <p>Type Wikipedia, one introduction at a time.</p>
         <div className="search-shell">
           <SearchBar
