@@ -327,7 +327,7 @@ Required `package.json` scripts:
 - **Files changed:** `src/hooks/useDebounce.ts`, `src/hooks/useWikiSearch.ts`, `src/hooks/useWikiSearch.test.ts`, `src/lib/wikipedia.ts`, `src/lib/wikipedia.test.ts`, `src/types/index.ts`, `tsconfig.app.json`, `tsconfig.node.json`, `WIKITYPE.md`
 - **Verification:** `npm run typecheck && npm run lint && npm run test && npm run build` — all passed; 15 tests passed, no lint warnings.
 - **Issues / notes:** Concurrent Phase 2.1 files remain untouched and unstaged.
-- **Commit:** Pending
+- **Commit:** `8f9333d609e70fe6bd40a045166f9916981ed3fb`
 - **Next task:** 2.1
 
 #### [2026-10-18 21:16] Run #4: SUCCESS
@@ -339,7 +339,7 @@ Required `package.json` scripts:
 - **Files changed:** `src/hooks/useDebounce.ts`, `src/hooks/useWikiSearch.ts`, `src/hooks/useWikiSearch.test.ts`, `src/lib/wikipedia.ts`, `src/lib/wikipedia.test.ts`, `src/types/index.ts`, `tsconfig.app.json`, `tsconfig.node.json`, `WIKITYPE.md`
 - **Verification:** `npm run typecheck && npm run lint && npm run test && npm run build` — all passed; 15 tests passed with no lint warnings.
 - **Issues / notes:** Concurrent Phase 2.1 UI edits were left untouched and unstaged.
-- **Commit:** Pending
+- **Commit:** `8f9333d609e70fe6bd40a045166f9916981ed3fb`
 - **Next task:** 2.1
 
 #### [2026-10-18 21:13] Run #3: SUCCESS
@@ -348,6 +348,7 @@ Required `package.json` scripts:
 - **Files changed:** Phase 0 scaffold and Phase 1 data layer files
 - **Verification:** `npm run typecheck && npm run lint && npm run test && npm run build` — all passed; 15 tests passed.
 - **Issues / notes:** Included in the final verified changes recorded in Run #4.
+- **Commit:** `8f9333d609e70fe6bd40a045166f9916981ed3fb`
 - **Next task:** 2.1
 
 #### [2026-10-18 21:11] Run #2: FAILED
