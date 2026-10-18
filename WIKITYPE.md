@@ -269,10 +269,10 @@ Required `package.json` scripts:
 - [x] 1.4 `useDebounce` and `useWikiSearch` hooks (loading, error, empty states)
 
 ### Phase 2: Landing page
-- [ ] 2.1 Black full-screen layout and centered `SearchBar` with the exact placeholder
-- [ ] 2.2 `SuggestionList` dropdown with keyboard navigation and mouse selection
-- [ ] 2.3 Enter and select handlers; app state switches to typing view
-- [ ] 2.4 Smooth landing to typing transition
+- [x] 2.1 Black full-screen layout and centered `SearchBar` with the exact placeholder
+- [x] 2.2 `SuggestionList` dropdown with keyboard navigation and mouse selection
+- [x] 2.3 Enter and select handlers; app state switches to typing view
+- [x] 2.4 Smooth landing to typing transition
 
 ### Phase 3: Typing engine
 - [x] 3.1 Pure `typingEngine.ts` (reducer, WPM, accuracy) with unit tests
@@ -301,10 +301,10 @@ Required `package.json` scripts:
 ## 12. Progress Log
 
 ### 12.1 Current Status
-- **Phase:** 2 (in progress)
-- **Last completed task:** 3.3 (completed independently while Phase 2 continues)
-- **Next task:** 2.2
-- **Known issues / blockers:** None known. Phase 2 work is proceeding concurrently.
+- **Phase:** 3 (complete)
+- **Last completed task:** 2.4 (Phase 3 was completed concurrently)
+- **Next task:** 4.1
+- **Known issues / blockers:** None known.
 - **Last updated:** 2026-10-18
 
 ### 12.2 Entry Template (copy for each run, newest first)
@@ -320,6 +320,18 @@ Required `package.json` scripts:
 ```
 
 ### 12.3 Log Entries
+
+#### [2026-10-18 21:29] Run #9: SUCCESS
+- **Tasks:** 2.2–2.4
+- **What was done:**
+  - Connected debounced Wikipedia search results to an accessible listbox with arrow-key navigation and mouse selection.
+  - Added Enter handling that selects the highlighted result or submitted query and switches app state to the typing view.
+  - Added a 300 ms fade/slide page transition with a reduced-motion fallback and covered the query-submit transition in tests.
+- **Files changed:** `src/App.tsx`, `src/App.test.tsx`, `src/components/SearchBar.tsx`, `src/components/SuggestionList.tsx`, `src/styles/index.css`, `WIKITYPE.md`
+- **Verification:** `npm run typecheck && npm run lint && npm run test && npm run build` — all passed; 29 tests passed with no lint warnings.
+- **Issues / notes:** The typing view is intentionally a route shell until Phase 4 supplies article loading and typing UI.
+- **Commit:** `a3e02ca36bc857807a38ff07048c8d6c1c5f2962`
+- **Next task:** 4.1
 
 #### [2026-10-18 21:27] Run #8: SUCCESS
 - **Tasks:** 3.1–3.3
