@@ -330,7 +330,7 @@ Required `package.json` scripts:
 - **Files changed:** `src/lib/typingEngine.ts`, `src/lib/typingEngine.test.ts`, `src/hooks/useTypingTest.ts`, `src/hooks/useTypingTest.test.ts`, `WIKITYPE.md`
 - **Verification:** `npm run typecheck && npm run lint && npm run test && npm run build` — all passed; 28 tests passed with no lint warnings.
 - **Issues / notes:** Phase 2's uncommitted UI work was preserved and not included.
-- **Commit:** Pending
+- **Commit:** `c6de6ea5aaa0ce5a97b241c5b00088b577e357e6`
 - **Next task:** 2.2
 
 #### [2026-10-18 21:26] Run #7: FAILED
