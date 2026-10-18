@@ -103,6 +103,24 @@ describe('typingReducer', () => {
     expect(state.finishedAt).toBe(200)
   })
 
+  it('extends the target without resetting progress or the running timer', () => {
+    const state = typingReducer(createInitialTypingState('abc'), {
+      type: 'KEY',
+      key: 'a',
+      timestamp: 100,
+    })
+    const extended = typingReducer(state, {
+      type: 'EXTEND',
+      target: 'abcdef',
+    })
+
+    expect(extended.target).toBe('abcdef')
+    expect(extended.typed).toBe('a')
+    expect(extended.status).toBe('running')
+    expect(extended.startedAt).toBe(100)
+    expect(extended.totalKeystrokes).toBe(1)
+  })
+
   it('resets all state for a new target', () => {
     const state = typingReducer(createInitialTypingState('old'), {
       type: 'RESET',

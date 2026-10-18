@@ -1,20 +1,29 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import {
+  act,
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+} from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { fetchIntro } from './lib/wikipedia'
+import { fetchTypingPassage } from './lib/wikipedia'
 import App from './App'
 
 vi.mock('./lib/wikipedia', () => ({
-  fetchIntro: vi.fn(),
+  fetchTypingPassage: vi.fn(),
   normalizeText: (text: string) => text,
   searchWikipedia: vi.fn().mockResolvedValue([]),
 }))
 
-const fetchIntroMock = vi.mocked(fetchIntro)
+const fetchTypingPassageMock = vi.mocked(fetchTypingPassage)
 
-afterEach(cleanup)
+afterEach(() => {
+  cleanup()
+  vi.useRealTimers()
+})
 
 beforeEach(() => {
-  fetchIntroMock.mockReset()
+  fetchTypingPassageMock.mockReset()
 })
 
 function submitTopic(topic = 'Ada Lovelace') {
@@ -35,7 +44,7 @@ describe('App', () => {
   })
 
   it('shows article loading after a query is submitted', () => {
-    fetchIntroMock.mockReturnValue(new Promise(() => undefined))
+    fetchTypingPassageMock.mockReturnValue(new Promise(() => undefined))
     render(<App />)
 
     submitTopic()
@@ -44,7 +53,7 @@ describe('App', () => {
   })
 
   it('shows an error with retry and new-topic actions', async () => {
-    fetchIntroMock
+    fetchTypingPassageMock
       .mockRejectedValueOnce(new Error('Network unavailable'))
       .mockResolvedValueOnce('Ada Lovelace was an English mathematician.')
     render(<App />)
@@ -59,18 +68,26 @@ describe('App', () => {
     expect(await screen.findByLabelText('Typing input')).toBeInTheDocument()
   })
 
-  it('shows results on completion, restarts the same passage, and returns to landing', async () => {
-    fetchIntroMock.mockResolvedValue('cat')
+  it('shows results when time expires, restarts the same passage, and returns to landing', async () => {
+    fetchTypingPassageMock.mockResolvedValue('c'.repeat(800))
     render(<App />)
 
     submitTopic()
     const input = await screen.findByLabelText('Typing input')
 
+    vi.useFakeTimers()
     fireEvent.keyDown(input, { key: 'c' })
-    fireEvent.keyDown(input, { key: 'a' })
-    fireEvent.keyDown(input, { key: 't' })
+    const firstCharacter = screen
+      .getByLabelText('Typing passage')
+      .querySelector('.typing-character')
+    expect(firstCharacter).toHaveTextContent('c')
+    expect(firstCharacter).toHaveAttribute('data-state', 'correct')
+    expect(screen.getByLabelText('Accuracy')).toHaveTextContent('100%')
+    act(() => {
+      vi.advanceTimersByTime(30_000)
+    })
 
-    expect(await screen.findByRole('dialog')).toBeInTheDocument()
+    expect(screen.getByRole('dialog')).toBeInTheDocument()
     expect(screen.getByLabelText('Final accuracy')).toHaveTextContent('100%')
 
     fireEvent.click(screen.getByRole('button', { name: 'Restart' }))
@@ -79,12 +96,11 @@ describe('App', () => {
     expect(screen.getByLabelText('Time remaining')).toHaveTextContent('30s')
 
     fireEvent.keyDown(screen.getByLabelText('Typing input'), { key: 'c' })
-    fireEvent.keyDown(screen.getByLabelText('Typing input'), { key: 'a' })
-    fireEvent.keyDown(screen.getByLabelText('Typing input'), { key: 't' })
+    act(() => {
+      vi.advanceTimersByTime(30_000)
+    })
 
-    fireEvent.click(
-      await screen.findByRole('button', { name: 'New topic' }),
-    )
+    fireEvent.click(screen.getByRole('button', { name: 'New topic' }))
     expect(
       screen.getByPlaceholderText('What are you interested in?'),
     ).toBeInTheDocument()

@@ -1,6 +1,7 @@
 const API_ENDPOINT = 'https://en.wikipedia.org/w/api.php'
 const MIN_INTRO_LENGTH = 200
 const MAX_FALLBACK_LENGTH = 1200
+const MAX_TYPING_PASSAGE_LENGTH = 12000
 
 type JsonRecord = Record<string, unknown>
 
@@ -77,6 +78,7 @@ async function fetchExtract(
   title: string,
   includeFullPage: boolean,
   signal?: AbortSignal,
+  maxCharacters?: number,
 ): Promise<string> {
   const params = new URLSearchParams({
     action: 'query',
@@ -89,6 +91,9 @@ async function fetchExtract(
     origin: '*',
   })
   if (!includeFullPage) params.set('exintro', '1')
+  if (maxCharacters !== undefined) {
+    params.set('exchars', String(maxCharacters))
+  }
 
   const payload = await fetchJson(params, signal)
   if (!isRecord(payload) || !isRecord(payload.query)) {
@@ -132,6 +137,25 @@ export async function fetchIntro(
   }
 
   return normalizedFullExtract.slice(0, MAX_FALLBACK_LENGTH)
+}
+
+export async function fetchTypingPassage(
+  title: string,
+  signal?: AbortSignal,
+): Promise<string> {
+  const extract = await fetchExtract(
+    title,
+    true,
+    signal,
+    MAX_TYPING_PASSAGE_LENGTH,
+  )
+  const passage = normalizeText(extract)
+
+  if (passage.length < MIN_INTRO_LENGTH) {
+    throw new Error('This article does not have enough text for a typing test.')
+  }
+
+  return passage.slice(0, MAX_TYPING_PASSAGE_LENGTH)
 }
 
 export function normalizeText(raw: string): string {

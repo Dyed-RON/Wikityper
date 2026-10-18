@@ -6,7 +6,7 @@ import { SuggestionList } from './components/SuggestionList'
 import { TypingArea } from './components/TypingArea'
 import { useTypingTest } from './hooks/useTypingTest'
 import { useWikiSearch } from './hooks/useWikiSearch'
-import { fetchIntro, normalizeText } from './lib/wikipedia'
+import { fetchTypingPassage, normalizeText } from './lib/wikipedia'
 
 type View = 'landing' | 'typing'
 
@@ -37,11 +37,11 @@ function App() {
 
     const controller = new AbortController()
 
-    void fetchIntro(selectedTopic, controller.signal)
-      .then((intro) => {
+    void fetchTypingPassage(selectedTopic, controller.signal)
+      .then((passage) => {
         if (controller.signal.aborted) return
 
-        const text = normalizeText(intro)
+        const text = normalizeText(passage)
         if (!text) throw new Error('This article has no text to type.')
         setArticle({ status: 'ready', text, error: null })
       })
@@ -126,7 +126,7 @@ function App() {
             <TypingArea
               disabled={typingTest.status === 'finished'}
               onKeyDown={typingTest.handleKeyDown}
-              target={article.text}
+              target={typingTest.target}
               typed={typingTest.typed}
             />
             {typingTest.status === 'finished' ? (

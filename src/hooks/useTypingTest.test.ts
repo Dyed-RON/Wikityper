@@ -66,16 +66,56 @@ describe('useTypingTest', () => {
     expect(result.current.typed).toBe('a')
   })
 
-  it('finishes early when all passage characters have been entered', () => {
+  it('extends a short passage instead of finishing before the countdown', () => {
     const { result } = renderHook(() => useTypingTest('a'))
 
     act(() => {
       result.current.handleKeyDown(keyboardEvent('a'))
     })
 
-    expect(result.current.status).toBe('finished')
+    expect(result.current.status).toBe('running')
     expect(result.current.timeLeft).toBe(30)
     expect(result.current.accuracy).toBe(100)
+    expect(result.current.target.length).toBeGreaterThan(1)
+  })
+
+  it('reveals more passage before the visible text runs out', () => {
+    const passage = 'a'.repeat(900)
+    const { result } = renderHook(() => useTypingTest(passage))
+    const initialLength = result.current.target.length
+
+    for (let index = 0; index < 370; index += 1) {
+      act(() => {
+        result.current.handleKeyDown(keyboardEvent('a'))
+      })
+    }
+
+    expect(initialLength).toBeLessThan(passage.length)
+    expect(result.current.target.length).toBeGreaterThan(initialLength)
+    expect(result.current.typed).toHaveLength(370)
+    expect(result.current.status).toBe('running')
+  })
+
+  it('continues appending passage when the supplied text is exhausted', () => {
+    const passage = 'short passage'
+    const { result } = renderHook(() => useTypingTest(passage))
+    const firstExpandedTargetLength = result.current.target.length
+
+    for (
+      let index = 0;
+      index < firstExpandedTargetLength + 290;
+      index += 1
+    ) {
+      act(() => {
+        result.current.handleKeyDown(keyboardEvent('x'))
+      })
+    }
+
+    expect(result.current.target.length).toBeGreaterThan(
+      firstExpandedTargetLength,
+    )
+    expect(result.current.status).toBe('running')
+    expect(result.current.timeLeft).toBe(30)
   })
 
   it('ignores modifiers and navigation keys and prevents space and backspace defaults', () => {

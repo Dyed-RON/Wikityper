@@ -16,6 +16,7 @@ export interface TypingState {
 export type TypingAction =
   | { type: 'KEY'; key: string; timestamp: number }
   | { type: 'TICK'; timestamp: number }
+  | { type: 'EXTEND'; target: string }
   | { type: 'RESET'; target: string }
 
 export function createInitialTypingState(target: string): TypingState {
@@ -53,6 +54,11 @@ export function typingReducer(
 ): TypingState {
   if (action.type === 'RESET') {
     return createInitialTypingState(action.target)
+  }
+
+  if (action.type === 'EXTEND') {
+    if (state.status === 'finished') return state
+    return { ...state, target: action.target }
   }
 
   if (state.status === 'finished') return state

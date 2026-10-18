@@ -1,5 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { fetchIntro, normalizeText, searchWikipedia } from './wikipedia'
+import {
+  fetchIntro,
+  fetchTypingPassage,
+  normalizeText,
+  searchWikipedia,
+} from './wikipedia'
 
 const fetchMock = vi.fn<typeof fetch>()
 
@@ -119,6 +124,33 @@ describe('fetchIntro', () => {
       .mockResolvedValueOnce(jsonResponse(articleResponse('Still short')))
 
     await expect(fetchIntro('Short page')).rejects.toThrow('not have enough text')
+  })
+})
+
+describe('fetchTypingPassage', () => {
+  it('fetches a longer plain-text passage for the typing test', async () => {
+    const passage = `Ada Lovelace ${'wrote notes. '.repeat(80)}`
+    fetchMock.mockResolvedValue(
+      jsonResponse(articleResponse(passage)),
+    )
+
+    await expect(fetchTypingPassage('Ada Lovelace')).resolves.toBe(
+      normalizeText(passage),
+    )
+
+    const requestUrl = new URL(String(fetchMock.mock.calls[0][0]))
+    expect(requestUrl.searchParams.get('action')).toBe('query')
+    expect(requestUrl.searchParams.get('exintro')).toBeNull()
+    expect(requestUrl.searchParams.get('exchars')).toBe('12000')
+    expect(requestUrl.searchParams.get('explaintext')).toBe('1')
+  })
+
+  it('rejects typing passages that are too short', async () => {
+    fetchMock.mockResolvedValue(jsonResponse(articleResponse('Too short')))
+
+    await expect(fetchTypingPassage('Short')).rejects.toThrow(
+      'not have enough text',
+    )
   })
 })
 

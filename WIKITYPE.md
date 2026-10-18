@@ -1,6 +1,6 @@
 # WikiType: Project Documentation and Agent Playbook
 
-> Monkeytype for Wikipedia. Search any topic, then type its Wikipedia intro against a 30-second timer.
+> Monkeytype for Wikipedia. Search any topic, then type its Wikipedia article text against a 30-second timer.
 
 This file is the **single source of truth** for building WikiType. It is written for AI coding agents (and humans). Read it fully before touching code, and **update the Progress Log (section 12) after every successful run**.
 
@@ -70,7 +70,7 @@ This file is the **single source of truth** for building WikiType. It is written
 - **HUD**
   - Top-left: live **WPM**, with the **30-second countdown** directly beneath it.
   - Top-right: live **accuracy %**.
-- **Text:** the lead introduction (summary) of the selected Wikipedia article.
+- **Text:** a bounded extract from the selected Wikipedia article, progressively revealed as the user approaches the end of the visible passage.
 - **Rendering (Monkeytype style):**
   - Untyped characters: dimmed.
   - Correct characters: highlighted (white or green).
@@ -97,20 +97,20 @@ GET https://en.wikipedia.org/w/api.php
 ```
 Response: `[query, titles[], descriptions[], urls[]]`. Use `titles` for the dropdown.
 
-### 4.2 Article intro
+### 4.2 Article typing passage
 ```
 GET https://en.wikipedia.org/w/api.php
   ?action=query
-  &prop=extracts
-  &exintro=1
+  &prop=extracts|pageprops
   &explaintext=1
   &redirects=1
+  &exchars=12000
   &titles={title}
   &format=json
   &formatversion=2
   &origin=*
 ```
-Use `query.pages[0].extract`.
+Use `query.pages[0].extract` as the source for the typing passage, capped at 12,000 normalized characters.
 
 ### 4.3 Text normalization (required before typing)
 Implement `normalizeText(raw: string): string` in `src/lib/wikipedia.ts`:
@@ -118,7 +118,7 @@ Implement `normalizeText(raw: string): string` in `src/lib/wikipedia.ts`:
 - Strip characters not typeable on a standard keyboard (or transliterate where simple).
 - Remove bracketed citation remnants like `[1]` and pronunciation parentheticals if they contain non-ASCII.
 - Collapse all whitespace and newlines into single spaces; trim.
-- If the result is shorter than ~200 characters, append the next available paragraph (fall back to `exintro=0` truncated to ~1200 chars). If still too short or the page is a disambiguation or missing, show a friendly error and a way back.
+- If the result is shorter than ~200 characters or the page is a disambiguation or missing, show a friendly error and a way back.
 
 ### 4.4 Robustness
 - Debounce suggestions by ~200 ms; cancel stale requests with `AbortController`.
@@ -137,8 +137,8 @@ Implement as a pure, testable module (`src/lib/typingEngine.ts`) plus a hook (`u
 - Characters are compared one by one at the same index; a wrong char shows red but the caret still advances (Monkeytype default). Backspace removes the last typed char (correction does not erase the mistake from `totalKeystrokes`).
 - Ignore modifier keys, arrows, and function keys. Prevent default for Space and Backspace to avoid page scroll and navigation.
 - Input is captured via a hidden, auto-focused `<input>` or a key listener; clicking the text area refocuses it.
-- When `timeLeft` hits 0, set `status = 'finished'` and **lock input**.
-- If the user finishes the whole passage before 30 s, finish the test early (or load more text; pick early finish for v1).
+- When `timeLeft` hits 0, set `status = 'finished'` and **lock input**; the timer is the only way to finish.
+- Extend the visible target with additional article text as the user approaches the end. If the fetched extract is exhausted before the timer, continue from its beginning with a paragraph break so typing remains active until time expires.
 
 **Formulas**
 - `WPM = (correctChars / 5) / elapsedMinutes`, where `elapsedMinutes = elapsedSeconds / 60` (use at least 1 s elapsed to avoid divide-by-zero).
@@ -232,7 +232,7 @@ Required `package.json` scripts:
 ## 9. Definition of Done (whole project)
 
 - [ ] Landing page matches section 3.1, with working live suggestions.
-- [ ] Selecting a topic fetches and normalizes the intro, then transitions to typing.
+- [ ] Selecting a topic fetches and normalizes an article typing passage, then transitions to typing.
 - [ ] HUD shows live WPM, 30 s countdown (under WPM), and live accuracy (top-right).
 - [ ] Correct, wrong, and untyped characters styled as specified; caret visible; smooth auto-scroll.
 - [ ] Input locks at 0 s; results modal shows final WPM and Accuracy with Restart and New topic.
@@ -277,7 +277,7 @@ Required `package.json` scripts:
 ### Phase 3: Typing engine
 - [x] 3.1 Pure `typingEngine.ts` (reducer, WPM, accuracy) with unit tests
 - [x] 3.2 `useTypingTest` hook (timer, first-key start, lock at 0)
-- [x] 3.3 Early finish when the passage is completed
+- [x] 3.3 Continue typing by progressively extending the passage until the timer expires
 
 ### Phase 4: Typing page UI
 - [x] 4.1 `Hud` (WPM and countdown top-left, accuracy top-right)
@@ -304,7 +304,7 @@ Required `package.json` scripts:
 - **Phase:** 5 (complete)
 - **Last completed task:** 5.4
 - **Next task:** 6.1
-- **Known issues / blockers:** None known.
+- **Known issues / blockers:** None known; typing intentionally continues until the timer expires, per the user-directed behavior change below.
 - **Last updated:** 2026-10-18
 
 ### 12.2 Entry Template (copy for each run, newest first)
@@ -320,6 +320,38 @@ Required `package.json` scripts:
 ```
 
 ### 12.3 Log Entries
+
+#### [2026-10-18 22:01] Run #20: SUCCESS
+- **Tasks:** User-requested continuous typing passage enhancement
+- **What was done:** Fetch a bounded article extract, reveal additional text in chunks as the user approaches the end, and keep typing active until the timer expires; update the behavior documentation.
+- **Files changed:** `WIKITYPE.md`, `src/App.tsx`, `src/App.test.tsx`, `src/hooks/useTypingTest.ts`, `src/hooks/useTypingTest.test.ts`, `src/lib/typingEngine.ts`, `src/lib/typingEngine.test.ts`, `src/lib/wikipedia.ts`, `src/lib/wikipedia.test.ts`
+- **Verification:** `npm run typecheck && npm run lint && npm run test && npm run build` — all passed; 44 tests passed.
+- **Issues / notes:** User-directed behavior supersedes early finish specified for v1. Commit hash will be recorded in a follow-up log update.
+- **Next task:** 6.1
+
+#### [2026-10-18 22:00] Run #19: FAILED
+- **Tasks:** User-requested continuous typing passage enhancement (in progress)
+- **What was done:** Isolated the App integration case and confirmed typed-character state after progression changes.
+- **Files changed:** `src/App.test.tsx`
+- **Verification:** `npm run test -- --run src/App.test.tsx` timed out because `findByRole` was used after switching to fake timers; replacing it with a synchronous query made the targeted test pass.
+- **Issues / notes:** Run the complete validation chain.
+- **Next task:** Complete passage extension verification.
+
+#### [2026-10-18 21:58] Run #18: FAILED
+- **Tasks:** User-requested continuous typing passage enhancement (in progress)
+- **What was done:** Fixed the Backspace path and added per-keystroke extension tests; hooked full-passage data into typing.
+- **Files changed:** Phase 3 typing engine/hook tests and Phase 4 App/Wikipedia integration tests
+- **Verification:** Typecheck and lint passed; tests failed (43 passed, one failed): the App timer-results integration test showed 0% accuracy where 100% was expected after a typed character. Build was not run because the chain stopped.
+- **Issues / notes:** Investigate the App integration test's key/typing state before proceeding.
+- **Next task:** Complete passage extension verification.
+
+#### [2026-10-18 21:57] Run #17: FAILED
+- **Tasks:** User-requested continuous typing passage enhancement (in progress)
+- **What was done:** Added bounded full-article passage fetching, progressive target extension, and related engine/API tests.
+- **Files changed:** `src/App.tsx`, `src/App.test.tsx`, `src/hooks/useTypingTest.ts`, `src/hooks/useTypingTest.test.ts`, `src/lib/typingEngine.ts`, `src/lib/typingEngine.test.ts`, `src/lib/wikipedia.ts`, `src/lib/wikipedia.test.ts`
+- **Verification:** Typecheck and lint passed; tests failed (40 passed, 4 failed): Backspace was incorrectly returned early from the handler; two hook tests batched key actions while assuming separate renders; the App test imported `act` from Vitest instead of Testing Library. Build was not run because the chain stopped.
+- **Issues / notes:** Fixed Backspace dispatch and revised the test harness to issue separate key events; the full validation chain is pending.
+- **Next task:** Complete passage extension verification.
 
 #### [2026-10-18 21:52] Run #16: SUCCESS
 - **Tasks:** User-requested landing-page layout refinement
@@ -502,6 +534,7 @@ Record any deviation from this document (stack change, spec change, new dependen
 | 2026-10-18 | Use **Oxlint** instead of ESLint; keep Prettier | Chosen in the create-vite prompt; faster, already wired up |
 | 2026-10-18 | Use **Tailwind v4** with `@tailwindcss/vite` (no `tailwind.config`, no `init`) | Current Tailwind setup for Vite; the old `npx tailwindcss init -p` no longer exists |
 | 2026-10-18 | Agents commit and push to `main` after each successful run | User wants automatic pushes and restore points; repo: github.com/Dyed-RON/Wikityper |
+| 2026-10-18 | Keep typing active until the 30-second timer expires, extending the visible passage progressively and wrapping through the fetched extract if needed | User-directed behavior change supersedes the original early-finish rule |
 
 ---
 
