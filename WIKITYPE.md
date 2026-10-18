@@ -4,6 +4,10 @@
 
 This file is the **single source of truth** for building WikiType. It is written for AI coding agents (and humans). Read it fully before touching code, and **update the Progress Log (section 12) after every successful run**.
 
+**Repository:** https://github.com/Dyed-RON/Wikityper.git (branch: `main`)
+**Local project folder:** `wikitype/` (the folder containing `package.json`). Run all commands from here.
+**Already scaffolded:** Vite + React + TypeScript with **Oxlint** (see Decision Log).
+
 ---
 
 ## 1. Agent Operating Rules (READ FIRST)
@@ -24,6 +28,17 @@ This file is the **single source of truth** for building WikiType. It is written
 7. **Do not change the stack, folder structure, or specs in this document without logging the reason** in section 13 (Decision Log).
 8. **Never commit secrets.** The Wikipedia API needs no key.
 9. Keep the UI exactly as specified in sections 3 to 5. Do not add features outside the spec until all Roadmap phases are done.
+10. **Commit and push after every SUCCESSFUL run** (all checks in rule 4 passing), after updating this file's Roadmap and Progress Log so the doc update ships in the same commit:
+    ```bash
+    git add -A
+    git commit -m "Task <id>: <short description>"
+    git push origin main
+    ```
+    - Never commit or push when typecheck, lint, test, or build fails.
+    - Never `git push --force`, never rewrite history, never delete branches.
+    - If `git push` is rejected, run `git pull --rebase origin main`, re-run the checks, then push again. If there are merge conflicts you cannot resolve safely, stop and log a `FAILED` entry.
+    - Record the commit hash in the Progress Log entry.
+11. Make sure `.gitignore` excludes `node_modules/`, `dist/`, and any `.env*` files before the first commit.
 
 ---
 
@@ -34,11 +49,11 @@ This file is the **single source of truth** for building WikiType. It is written
 | Runtime / tooling | **Node.js 20+**, npm |
 | Language | **TypeScript** (strict mode) |
 | Framework | **React 18 + Vite** |
-| Styling | **Tailwind CSS** (plus small custom CSS for caret and animations) |
+| Styling | **Tailwind CSS v4** via the `@tailwindcss/vite` plugin (plus small custom CSS for caret and animations) |
 | State | React hooks (`useReducer` for the typing engine) |
 | Animation | CSS transitions (optional: `framer-motion` for the page transition) |
 | Testing | **Vitest** + React Testing Library |
-| Lint / format | ESLint + Prettier |
+| Lint / format | **Oxlint** (already scaffolded; do not add ESLint) + Prettier |
 | Data source | Wikipedia public APIs (no API key) |
 
 ---
@@ -156,8 +171,7 @@ wikitype/
 ├─ package.json
 ├─ tsconfig.json
 ├─ vite.config.ts
-├─ tailwind.config.ts
-├─ .eslintrc.cjs / eslint.config.js
+├─ .oxlintrc.json           # optional Oxlint config
 ├─ .prettierrc
 └─ src/
    ├─ main.tsx
@@ -184,14 +198,20 @@ wikitype/
 ## 8. Setup Commands (Phase 0)
 
 ```bash
-npm create vite@latest wikitype -- --template react-ts
-cd wikitype
-npm install
-npm install -D tailwindcss postcss autoprefixer vitest jsdom \
+# Already done: project created with
+#   npm create vite@latest wikitype -- --template react-ts   (Oxlint chosen)
+# Run the rest from inside the wikitype/ folder:
+npm install tailwindcss @tailwindcss/vite
+npm install -D vitest jsdom \
   @testing-library/react @testing-library/jest-dom @testing-library/user-event \
-  prettier eslint
-npx tailwindcss init -p
+  prettier
 ```
+
+Tailwind v4 setup (no `tailwind.config` or `init` command needed):
+1. Add `tailwindcss()` (imported from `@tailwindcss/vite`) to the `plugins` array in `vite.config.ts`.
+2. Put `@import "tailwindcss";` at the top of `src/styles/index.css` (or `src/index.css`) and import it in `main.tsx`.
+
+Vitest setup: add a `test` block to `vite.config.ts` with `environment: 'jsdom'` and a setup file that imports `@testing-library/jest-dom`.
 
 Required `package.json` scripts:
 ```json
@@ -200,7 +220,7 @@ Required `package.json` scripts:
   "build": "tsc -b && vite build",
   "preview": "vite preview",
   "typecheck": "tsc --noEmit",
-  "lint": "eslint .",
+  "lint": "oxlint",
   "test": "vitest run",
   "format": "prettier --write ."
 }
@@ -237,8 +257,8 @@ Required `package.json` scripts:
 ## 11. Roadmap (agents: tick items as you complete them)
 
 ### Phase 0: Scaffold
-- [ ] 0.1 Create Vite + React + TS project; enable strict TS
-- [ ] 0.2 Add Tailwind, ESLint, Prettier, Vitest; add all npm scripts from section 8
+- [x] 0.1 Create Vite + React + TS project; enable strict TS (scaffolded manually by the user; confirm `"strict": true` in tsconfig)
+- [ ] 0.2 Add Tailwind v4, Prettier, Vitest; keep the existing Oxlint setup; add all npm scripts from section 8 (make sure `lint` is `oxlint`)
 - [ ] 0.3 Create folder structure from section 7 with placeholder files
 - [ ] 0.4 Verify `typecheck`, `lint`, `test`, `build` all run green
 
@@ -281,11 +301,11 @@ Required `package.json` scripts:
 ## 12. Progress Log
 
 ### 12.1 Current Status
-- **Phase:** 0 (not started)
-- **Last completed task:** none
-- **Next task:** 0.1
-- **Known issues / blockers:** none
-- **Last updated:** (date and agent)
+- **Phase:** 0 (in progress)
+- **Last completed task:** 0.1
+- **Next task:** 0.2
+- **Known issues / blockers:** Git repo may not be initialised/pushed yet; the first agent should check `git status` and, if needed, run `git init`, add the remote from the header, and make the first push.
+- **Last updated:** 2026-10-18 (user, manual scaffold)
 
 ### 12.2 Entry Template (copy for each run, newest first)
 
@@ -301,7 +321,15 @@ Required `package.json` scripts:
 
 ### 12.3 Log Entries
 
-_(No runs yet. The first agent adds its entry here.)_
+#### [2026-10-18 12:51] Run #0: SUCCESS (manual)
+- **Tasks:** 0.1
+- **What was done:** Project scaffolded with `create-vite` (React + TypeScript template, Oxlint, npm). Dev server confirmed running at http://localhost:5173/.
+- **Files changed:** entire initial scaffold
+- **Verification:** `npm run dev` starts cleanly; 0 vulnerabilities reported by npm.
+- **Issues / notes:** Oxlint chosen instead of ESLint (see Decision Log).
+- **Next task:** 0.2
+
+_(Agents add new entries above this line, newest first.)_
 
 ---
 
@@ -311,7 +339,9 @@ Record any deviation from this document (stack change, spec change, new dependen
 
 | Date | Decision | Reason |
 |---|---|---|
-| (none yet) | | |
+| 2026-10-18 | Use **Oxlint** instead of ESLint; keep Prettier | Chosen in the create-vite prompt; faster, already wired up |
+| 2026-10-18 | Use **Tailwind v4** with `@tailwindcss/vite` (no `tailwind.config`, no `init`) | Current Tailwind setup for Vite; the old `npx tailwindcss init -p` no longer exists |
+| 2026-10-18 | Agents commit and push to `main` after each successful run | User wants automatic pushes and restore points; repo: github.com/Dyed-RON/Wikityper |
 
 ---
 
@@ -323,8 +353,12 @@ Follow the Agent Operating Rules in section 1. Take the next unchecked task in t
 Roadmap (section 11). Implement it, then run:
   npm run typecheck && npm run lint && npm run test && npm run build
 If everything passes, tick the task(s) in section 11, update Current Status
-(section 12.1), and append a Progress Log entry (section 12.3) using the template.
-If anything fails, fix it; if you cannot, log a FAILED entry with details and stop.
+(section 12.1), append a Progress Log entry (section 12.3) using the template, then
+commit and push to origin main as described in rule 10 (never force-push), and put
+the commit hash in the log entry.
+If anything fails, fix it; if you cannot, log a FAILED entry with details and stop
+(do not push broken code).
+Stack notes: Oxlint (not ESLint) and Tailwind v4 are already decided; see section 13.
 Do not do work outside the Roadmap. Do not edit the spec without a Decision Log entry.
 ```
 
