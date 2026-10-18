@@ -259,14 +259,14 @@ Required `package.json` scripts:
 ### Phase 0: Scaffold
 - [x] 0.1 Create Vite + React + TS project; enable strict TS (scaffolded manually by the user; confirm `"strict": true` in tsconfig)
 - [x] 0.2 Add Tailwind v4, Prettier, Vitest; keep the existing Oxlint setup; add all npm scripts from section 8 (make sure `lint` is `oxlint`)
-- [ ] 0.3 Create folder structure from section 7 with placeholder files
-- [ ] 0.4 Verify `typecheck`, `lint`, `test`, `build` all run green
+- [x] 0.3 Create folder structure from section 7 with placeholder files
+- [x] 0.4 Verify `typecheck`, `lint`, `test`, `build` all run green
 
 ### Phase 1: Data layer
-- [ ] 1.1 `searchWikipedia(query, signal)` in `lib/wikipedia.ts`
-- [ ] 1.2 `fetchIntro(title)` in `lib/wikipedia.ts`
-- [ ] 1.3 `normalizeText` with unit tests
-- [ ] 1.4 `useDebounce` and `useWikiSearch` hooks (loading, error, empty states)
+- [x] 1.1 `searchWikipedia(query, signal)` in `lib/wikipedia.ts`
+- [x] 1.2 `fetchIntro(title)` in `lib/wikipedia.ts`
+- [x] 1.3 `normalizeText` with unit tests
+- [x] 1.4 `useDebounce` and `useWikiSearch` hooks (loading, error, empty states)
 
 ### Phase 2: Landing page
 - [ ] 2.1 Black full-screen layout and centered `SearchBar` with the exact placeholder
@@ -301,10 +301,10 @@ Required `package.json` scripts:
 ## 12. Progress Log
 
 ### 12.1 Current Status
-- **Phase:** 0 (in progress)
-- **Last completed task:** 0.2
-- **Next task:** 0.3
-- **Known issues / blockers:** None known. The repository is on `main` and synchronized with `origin/main`.
+- **Phase:** 1 (complete)
+- **Last completed task:** 1.4
+- **Next task:** 2.1
+- **Known issues / blockers:** A concurrent agent is working on Phase 2.1 in the shared worktree; its UI edits were preserved and excluded from the Phase 1 commit.
 - **Last updated:** 2026-10-18
 
 ### 12.2 Entry Template (copy for each run, newest first)
@@ -320,6 +320,46 @@ Required `package.json` scripts:
 ```
 
 ### 12.3 Log Entries
+
+#### [2026-10-18 21:18] Run #5: SUCCESS
+- **Tasks:** 0.3, 0.4, 1.1–1.4
+- **What was done:** Re-ran the complete prescribed validation chain against the preserved shared worktree after excluding the concurrent Phase 2 stylesheet and UI files from this task's changes.
+- **Files changed:** `src/hooks/useDebounce.ts`, `src/hooks/useWikiSearch.ts`, `src/hooks/useWikiSearch.test.ts`, `src/lib/wikipedia.ts`, `src/lib/wikipedia.test.ts`, `src/types/index.ts`, `tsconfig.app.json`, `tsconfig.node.json`, `WIKITYPE.md`
+- **Verification:** `npm run typecheck && npm run lint && npm run test && npm run build` — all passed; 15 tests passed, no lint warnings.
+- **Issues / notes:** Concurrent Phase 2.1 files remain untouched and unstaged.
+- **Commit:** Pending
+- **Next task:** 2.1
+
+#### [2026-10-18 21:16] Run #4: SUCCESS
+- **Tasks:** 0.3, 0.4, 1.1–1.4
+- **What was done:**
+  - Confirmed the section 7 scaffold structure and enabled strict TypeScript checking in both TypeScript projects.
+  - Implemented the Wikipedia OpenSearch/article API, fallback intro fetching, and keyboard-safe text normalization.
+  - Added debounced, abortable search hooks and tests for API behavior, normalization, loading, empty/error states, and stale requests.
+- **Files changed:** `src/hooks/useDebounce.ts`, `src/hooks/useWikiSearch.ts`, `src/hooks/useWikiSearch.test.ts`, `src/lib/wikipedia.ts`, `src/lib/wikipedia.test.ts`, `src/types/index.ts`, `tsconfig.app.json`, `tsconfig.node.json`, `WIKITYPE.md`
+- **Verification:** `npm run typecheck && npm run lint && npm run test && npm run build` — all passed; 15 tests passed with no lint warnings.
+- **Issues / notes:** Concurrent Phase 2.1 UI edits were left untouched and unstaged.
+- **Commit:** Pending
+- **Next task:** 2.1
+
+#### [2026-10-18 21:13] Run #3: SUCCESS
+- **Tasks:** 0.3, 0.4, 1.1–1.4
+- **What was done:** The full validation chain passed after fixing the first test failure. Oxlint emitted one `no-control-regex` warning, subsequently resolved and verified in Run #4.
+- **Files changed:** Phase 0 scaffold and Phase 1 data layer files
+- **Verification:** `npm run typecheck && npm run lint && npm run test && npm run build` — all passed; 15 tests passed.
+- **Issues / notes:** Included in the final verified changes recorded in Run #4.
+- **Next task:** 2.1
+
+#### [2026-10-18 21:11] Run #2: FAILED
+- **Tasks:** 0.3, 0.4, 1.1–1.4 (in progress)
+- **What was done:**
+  - Added the remaining scaffold placeholders and moved the global stylesheet under `src/styles/`.
+  - Implemented the Wikipedia search/article API, text normalization, and debounced search hooks with unit tests.
+  - Enabled strict TypeScript checking in both project configs.
+- **Files changed:** `src/`, `tsconfig.app.json`, `tsconfig.node.json`
+- **Verification:** `npm run typecheck` passed; `npm run lint` completed with two warnings; `npm run test` failed (14 passed, one failed: whitespace was removed rather than collapsed); build was not run because the chain stopped.
+- **Issues / notes:** Fix normalization whitespace ordering and address the two Oxlint warnings before the next full run.
+- **Next task:** 0.3
 
 #### [2026-10-18 20:56] Run #1: SUCCESS
 - **Tasks:** 0.2
