@@ -1,4 +1,5 @@
 import {
+  useEffect,
   useLayoutEffect,
   useRef,
   useState,
@@ -21,7 +22,12 @@ export function TypingArea({
 }: TypingAreaProps) {
   const viewportRef = useRef<HTMLDivElement>(null)
   const caretRef = useRef<HTMLSpanElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
   const [scrollOffset, setScrollOffset] = useState(0)
+
+  useEffect(() => {
+    if (!disabled) inputRef.current?.focus()
+  }, [disabled])
 
   useLayoutEffect(() => {
     const viewport = viewportRef.current
@@ -89,10 +95,10 @@ export function TypingArea({
         aria-label="Typing input"
         autoCapitalize="off"
         autoComplete="off"
-        autoFocus={!disabled}
         className="typing-input"
         disabled={disabled}
         onKeyDown={onKeyDown}
+        ref={inputRef}
         readOnly
         spellCheck={false}
         tabIndex={disabled ? -1 : 0}

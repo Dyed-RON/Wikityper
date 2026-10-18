@@ -286,10 +286,10 @@ Required `package.json` scripts:
 - [x] 4.4 Loading and error states for article fetch
 
 ### Phase 5: Results and polish
-- [ ] 5.1 `ResultsModal` (final WPM, accuracy, Restart, New topic)
-- [ ] 5.2 Restart (same text, reset state) and New topic (back to landing)
-- [ ] 5.3 Accessibility and `prefers-reduced-motion`
-- [ ] 5.4 Responsive pass and final visual polish
+- [x] 5.1 `ResultsModal` (final WPM, accuracy, Restart, New topic)
+- [x] 5.2 Restart (same text, reset state) and New topic (back to landing)
+- [x] 5.3 Accessibility and `prefers-reduced-motion`
+- [x] 5.4 Responsive pass and final visual polish
 
 ### Phase 6: Wrap-up
 - [ ] 6.1 Write README (install, dev, build, how it works)
@@ -301,9 +301,9 @@ Required `package.json` scripts:
 ## 12. Progress Log
 
 ### 12.1 Current Status
-- **Phase:** 4 (complete)
-- **Last completed task:** 4.4
-- **Next task:** 5.1
+- **Phase:** 5 (complete)
+- **Last completed task:** 5.4
+- **Next task:** 6.1
 - **Known issues / blockers:** None known.
 - **Last updated:** 2026-10-18
 
@@ -320,6 +320,26 @@ Required `package.json` scripts:
 ```
 
 ### 12.3 Log Entries
+
+#### [2026-10-18 21:45] Run #15: SUCCESS
+- **Tasks:** 5.1–5.4
+- **What was done:**
+  - Added the results dialog with final WPM and accuracy, keyboard focus management, focus trapping, Escape-to-New-topic, Restart, and New topic actions.
+  - Wired restart to reset the same typing passage and restore input focus; New topic clears the selected article and query and returns to landing.
+  - Added responsive result-card styles and verified reduced-motion behavior remains respected; added component and app-flow tests.
+- **Files changed:** `src/App.tsx`, `src/App.test.tsx`, `src/components/ResultsModal.tsx`, `src/components/ResultsModal.test.tsx`, `src/components/TypingArea.tsx`, `src/components/TypingPage.css`, `WIKITYPE.md`
+- **Verification:** `npm run typecheck && npm run lint && npm run test && npm run build` — all passed; 39 tests passed with no lint warnings.
+- **Issues / notes:** None.
+- **Commit:** Pending
+- **Next task:** 6.1
+
+#### [2026-10-18 21:44] Run #14: FAILED
+- **Tasks:** 5.1–5.4 (in progress)
+- **What was done:** Added the results modal flow, restart/new-topic actions, accessible keyboard focus handling, and responsive modal styles.
+- **Files changed:** `src/App.tsx`, `src/App.test.tsx`, `src/components/ResultsModal.tsx`, `src/components/TypingArea.tsx`, `src/components/TypingPage.css`, `src/components/ResultsModal.test.tsx`
+- **Verification:** Typecheck and lint passed; tests failed in two App integration cases because the Wikipedia module mock lacked the `searchWikipedia` export. The remaining component tests passed; build was not run because the chain stopped.
+- **Issues / notes:** Extended the App test mock to provide the search function; the full chain passed in Run #15.
+- **Next task:** 5.1
 
 #### [2026-10-18 21:40] Run #12: SUCCESS
 - **Tasks:** 4.3, 4.4

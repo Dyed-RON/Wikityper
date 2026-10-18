@@ -6,6 +6,7 @@ import App from './App'
 vi.mock('./lib/wikipedia', () => ({
   fetchIntro: vi.fn(),
   normalizeText: (text: string) => text,
+  searchWikipedia: vi.fn().mockResolvedValue([]),
 }))
 
 const fetchIntroMock = vi.mocked(fetchIntro)
@@ -26,9 +27,11 @@ describe('App', () => {
   it('renders the landing-page topic search', () => {
     render(<App />)
 
-    expect(
-      screen.getByPlaceholderText('What are you interested in?'),
-    ).toBeInTheDocument()
+    const searchInput = screen.getByPlaceholderText(
+      'What are you interested in?',
+    )
+    expect(searchInput).toBeInTheDocument()
+    expect(searchInput).toHaveValue('')
   })
 
   it('shows article loading after a query is submitted', () => {
@@ -54,5 +57,36 @@ describe('App', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Retry' }))
 
     expect(await screen.findByLabelText('Typing input')).toBeInTheDocument()
+  })
+
+  it('shows results on completion, restarts the same passage, and returns to landing', async () => {
+    fetchIntroMock.mockResolvedValue('cat')
+    render(<App />)
+
+    submitTopic()
+    const input = await screen.findByLabelText('Typing input')
+
+    fireEvent.keyDown(input, { key: 'c' })
+    fireEvent.keyDown(input, { key: 'a' })
+    fireEvent.keyDown(input, { key: 't' })
+
+    expect(await screen.findByRole('dialog')).toBeInTheDocument()
+    expect(screen.getByLabelText('Final accuracy')).toHaveTextContent('100%')
+
+    fireEvent.click(screen.getByRole('button', { name: 'Restart' }))
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    expect(screen.getByLabelText('Typing input')).toHaveFocus()
+    expect(screen.getByLabelText('Time remaining')).toHaveTextContent('30s')
+
+    fireEvent.keyDown(screen.getByLabelText('Typing input'), { key: 'c' })
+    fireEvent.keyDown(screen.getByLabelText('Typing input'), { key: 'a' })
+    fireEvent.keyDown(screen.getByLabelText('Typing input'), { key: 't' })
+
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'New topic' }),
+    )
+    expect(
+      screen.getByPlaceholderText('What are you interested in?'),
+    ).toBeInTheDocument()
   })
 })

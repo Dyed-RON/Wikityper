@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Hud } from './components/Hud'
+import { ResultsModal } from './components/ResultsModal'
 import { SearchBar } from './components/SearchBar'
 import { SuggestionList } from './components/SuggestionList'
 import { TypingArea } from './components/TypingArea'
@@ -77,6 +78,8 @@ function App() {
   const returnToLanding = () => {
     setArticle(initialArticleState)
     setSelectedTopic('')
+    setQuery('')
+    setActiveIndex(-1)
     setView('landing')
   }
 
@@ -126,6 +129,14 @@ function App() {
               target={article.text}
               typed={typingTest.typed}
             />
+            {typingTest.status === 'finished' ? (
+              <ResultsModal
+                accuracy={typingTest.accuracy}
+                onNewTopic={returnToLanding}
+                onRestart={typingTest.reset}
+                wpm={typingTest.wpm}
+              />
+            ) : null}
           </>
         ) : null}
       </main>
