@@ -327,7 +327,7 @@ Required `package.json` scripts:
 - **Files changed:** `README.md`, `WIKITYPE.md`
 - **Verification:** `npm run typecheck && npm run lint && npm run test && npm run build` — all passed; 47 tests passed.
 - **Issues / notes:** Phase 6.2 final sign-off remains.
-- **Commit:** to be recorded after commit.
+- **Commit:** `e72d84ce549b2c807570de8b62e47211b0362e25`
 - **Next task:** 6.2
 
 #### [2026-10-18 22:17] Run #23: PARTIAL
