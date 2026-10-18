@@ -280,8 +280,8 @@ Required `package.json` scripts:
 - [x] 3.3 Early finish when the passage is completed
 
 ### Phase 4: Typing page UI
-- [ ] 4.1 `Hud` (WPM and countdown top-left, accuracy top-right)
-- [ ] 4.2 `TypingArea` with per-character states and caret
+- [x] 4.1 `Hud` (WPM and countdown top-left, accuracy top-right)
+- [x] 4.2 `TypingArea` with per-character states and caret
 - [ ] 4.3 Smooth line auto-scroll
 - [ ] 4.4 Loading and error states for article fetch
 
@@ -301,9 +301,9 @@ Required `package.json` scripts:
 ## 12. Progress Log
 
 ### 12.1 Current Status
-- **Phase:** 3 (complete)
-- **Last completed task:** 2.4 (Phase 3 was completed concurrently)
-- **Next task:** 4.1
+- **Phase:** 4 (in progress)
+- **Last completed task:** 4.2
+- **Next task:** 4.3
 - **Known issues / blockers:** None known.
 - **Last updated:** 2026-10-18
 
@@ -320,6 +320,26 @@ Required `package.json` scripts:
 ```
 
 ### 12.3 Log Entries
+
+#### [2026-10-18 21:35] Run #11: SUCCESS
+- **Tasks:** 4.1, 4.2
+- **What was done:**
+  - Added a responsive HUD displaying WPM, the countdown beneath it, and accuracy.
+  - Added a focused hidden input for keyboard capture and per-character untyped/correct/incorrect rendering with a visible caret.
+  - Added component tests for metric values, character states, caret placement, input focus, and disabled state.
+- **Files changed:** `src/components/Hud.tsx`, `src/components/Hud.test.tsx`, `src/components/TypingArea.tsx`, `src/components/TypingArea.test.tsx`, `src/components/TypingPage.css`, `WIKITYPE.md`
+- **Verification:** `npm run typecheck && npm run lint && npm run test && npm run build` — all passed; 34 tests passed with no lint warnings.
+- **Issues / notes:** Smooth line auto-scroll remains task 4.3.
+- **Commit:** Pending
+- **Next task:** 4.3
+
+#### [2026-10-18 21:33] Run #10: FAILED
+- **Tasks:** 4.1, 4.2 (in progress)
+- **What was done:** Added the HUD and typing passage components with styles and tests.
+- **Files changed:** `src/components/Hud.tsx`, `src/components/TypingArea.tsx`, `src/components/TypingPage.css`, component tests
+- **Verification:** `npm run typecheck` and `npm run lint` passed; `npm run test` failed because rendered DOM from prior tests remained mounted, causing ambiguous accessible-label queries; build was not run because the chain stopped.
+- **Issues / notes:** Added explicit RTL cleanup after each test; verified in Run #11.
+- **Next task:** 4.1
 
 #### [2026-10-18 21:29] Run #9: SUCCESS
 - **Tasks:** 2.2–2.4
