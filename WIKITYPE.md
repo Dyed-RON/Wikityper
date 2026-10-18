@@ -275,9 +275,9 @@ Required `package.json` scripts:
 - [ ] 2.4 Smooth landing to typing transition
 
 ### Phase 3: Typing engine
-- [ ] 3.1 Pure `typingEngine.ts` (reducer, WPM, accuracy) with unit tests
-- [ ] 3.2 `useTypingTest` hook (timer, first-key start, lock at 0)
-- [ ] 3.3 Early finish when the passage is completed
+- [x] 3.1 Pure `typingEngine.ts` (reducer, WPM, accuracy) with unit tests
+- [x] 3.2 `useTypingTest` hook (timer, first-key start, lock at 0)
+- [x] 3.3 Early finish when the passage is completed
 
 ### Phase 4: Typing page UI
 - [ ] 4.1 `Hud` (WPM and countdown top-left, accuracy top-right)
@@ -302,9 +302,9 @@ Required `package.json` scripts:
 
 ### 12.1 Current Status
 - **Phase:** 2 (in progress)
-- **Last completed task:** 2.1
+- **Last completed task:** 3.3 (completed independently while Phase 2 continues)
 - **Next task:** 2.2
-- **Known issues / blockers:** None known.
+- **Known issues / blockers:** None known. Phase 2 work is proceeding concurrently.
 - **Last updated:** 2026-10-18
 
 ### 12.2 Entry Template (copy for each run, newest first)
@@ -320,6 +320,28 @@ Required `package.json` scripts:
 ```
 
 ### 12.3 Log Entries
+
+#### [2026-10-18 21:27] Run #8: SUCCESS
+- **Tasks:** 3.1–3.3
+- **What was done:**
+  - Implemented the pure typing reducer, keystroke tracking, WPM/accuracy calculations, countdown expiration, and early finish on passage completion.
+  - Added `useTypingTest` with first-character timer start, one-second updates, keyboard filtering/default prevention, input locking, and reset behavior.
+  - Added reducer and hook tests, including timer, backspace, metrics, lock, and early-finish cases.
+- **Files changed:** `src/lib/typingEngine.ts`, `src/lib/typingEngine.test.ts`, `src/hooks/useTypingTest.ts`, `src/hooks/useTypingTest.test.ts`, `WIKITYPE.md`
+- **Verification:** `npm run typecheck && npm run lint && npm run test && npm run build` — all passed; 28 tests passed with no lint warnings.
+- **Issues / notes:** Phase 2's uncommitted UI work was preserved and not included.
+- **Commit:** Pending
+- **Next task:** 2.2
+
+#### [2026-10-18 21:26] Run #7: FAILED
+- **Tasks:** 3.1–3.3 (in progress)
+- **What was done:**
+  - Implemented the typing reducer, metrics, countdown/keyboard hook, and Phase 3 tests.
+  - Fixed a test setup issue and impure render-time clock read discovered during validation.
+- **Files changed:** `src/lib/typingEngine.ts`, `src/hooks/useTypingTest.ts`, and Phase 3 tests
+- **Verification:** `npm run typecheck` passed; `npm run lint` passed with one `react/purity` warning; `npm run test` failed because `App.test.tsx` briefly imported a missing `App` module while Phase 2 work was in progress, and one countdown test advanced timers before the hook interval was installed; build was not run because the chain stopped.
+- **Issues / notes:** The countdown test and lint warning are fixed. The Phase 2 app/test files have since resolved; rerun the full suite. No Phase 2 files were edited.
+- **Next task:** 3.1
 
 #### [2026-10-18 21:24] Run #6: SUCCESS
 - **Tasks:** 2.1
