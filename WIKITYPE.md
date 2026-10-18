@@ -282,8 +282,8 @@ Required `package.json` scripts:
 ### Phase 4: Typing page UI
 - [x] 4.1 `Hud` (WPM and countdown top-left, accuracy top-right)
 - [x] 4.2 `TypingArea` with per-character states and caret
-- [ ] 4.3 Smooth line auto-scroll
-- [ ] 4.4 Loading and error states for article fetch
+- [x] 4.3 Smooth line auto-scroll
+- [x] 4.4 Loading and error states for article fetch
 
 ### Phase 5: Results and polish
 - [ ] 5.1 `ResultsModal` (final WPM, accuracy, Restart, New topic)
@@ -301,9 +301,9 @@ Required `package.json` scripts:
 ## 12. Progress Log
 
 ### 12.1 Current Status
-- **Phase:** 4 (in progress)
-- **Last completed task:** 4.2
-- **Next task:** 4.3
+- **Phase:** 4 (complete)
+- **Last completed task:** 4.4
+- **Next task:** 5.1
 - **Known issues / blockers:** None known.
 - **Last updated:** 2026-10-18
 
@@ -320,6 +320,18 @@ Required `package.json` scripts:
 ```
 
 ### 12.3 Log Entries
+
+#### [2026-10-18 21:40] Run #12: SUCCESS
+- **Tasks:** 4.3, 4.4
+- **What was done:**
+  - Added a measured caret-based transform inside a fixed, three-line text viewport for smooth passage scrolling; reduced-motion users receive no scroll animation.
+  - Connected topic selection to abortable, normalized Wikipedia intro fetching and the HUD/typing passage.
+  - Added loading, friendly error, Retry, and New topic states, with tests for loading and retry recovery.
+- **Files changed:** `src/App.tsx`, `src/App.test.tsx`, `src/components/TypingArea.tsx`, `src/components/TypingPage.css`, `WIKITYPE.md`
+- **Verification:** `npm run typecheck && npm run lint && npm run test && npm run build` — all passed; 35 tests passed with no lint warnings.
+- **Issues / notes:** None.
+- **Commit:** `9a4e190f98d5cd74f781e76b56bfb59c1d00398d`
+- **Next task:** 5.1
 
 #### [2026-10-18 21:35] Run #11: SUCCESS
 - **Tasks:** 4.1, 4.2
